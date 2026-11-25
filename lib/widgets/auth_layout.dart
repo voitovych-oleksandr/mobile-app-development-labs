@@ -3,11 +3,7 @@ import 'package:mobile_labs/core/app_colors.dart';
 import 'package:mobile_labs/core/app_spacing.dart';
 
 class AuthLayout extends StatelessWidget {
-  const AuthLayout({
-    required this.title,
-    required this.children,
-    super.key,
-  });
+  const AuthLayout({required this.title, required this.children, super.key});
 
   final String title;
   final List<Widget> children;

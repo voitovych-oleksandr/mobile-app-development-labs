@@ -46,9 +46,9 @@ class UserProfileScreen extends StatelessWidget {
                   icon: Icons.logout,
                   onPressed: () => Navigator.of(context)
                       .pushNamedAndRemoveUntil(
-                    AppRoutes.login,
-                    (Route<dynamic> route) => false,
-                  ),
+                        AppRoutes.login,
+                        (Route<dynamic> route) => false,
+                      ),
                 ),
               ],
             ),

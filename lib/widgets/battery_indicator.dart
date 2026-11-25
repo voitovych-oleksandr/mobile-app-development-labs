@@ -30,10 +30,7 @@ class BatteryIndicator extends StatelessWidget {
           children: <Widget>[
             Text('Заряд станції', style: text.titleMedium),
             const SizedBox(height: AppSpacing.sm),
-            Text(
-              '$percent%',
-              style: text.displaySmall?.copyWith(color: color),
-            ),
+            Text('$percent%', style: text.displaySmall?.copyWith(color: color)),
             const SizedBox(height: AppSpacing.sm),
             LinearProgressIndicator(
               value: percent / 100,

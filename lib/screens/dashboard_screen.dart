@@ -22,8 +22,7 @@ class DashboardScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.person),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(AppRoutes.profile),
+            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.profile),
           ),
         ],
       ),

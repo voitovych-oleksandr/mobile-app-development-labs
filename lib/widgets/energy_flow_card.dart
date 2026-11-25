@@ -71,10 +71,7 @@ class _FlowItem extends StatelessWidget {
           textAlign: TextAlign.center,
           style: const TextStyle(color: AppColors.textSecondary),
         ),
-        Text(
-          '$watts Вт',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        Text('$watts Вт', style: Theme.of(context).textTheme.titleMedium),
       ],
     );
   }

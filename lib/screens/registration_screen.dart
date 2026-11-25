@@ -13,10 +13,7 @@ class RegistrationScreen extends StatelessWidget {
     return AuthLayout(
       title: 'Реєстрація',
       children: <Widget>[
-        const AppTextField(
-          label: "Ім'я",
-          icon: Icons.person_outline,
-        ),
+        const AppTextField(label: "Ім'я", icon: Icons.person_outline),
         const SizedBox(height: AppSpacing.md),
         const AppTextField(
           label: 'Email',
@@ -40,8 +37,8 @@ class RegistrationScreen extends StatelessWidget {
         PrimaryButton(
           label: 'Створити акаунт',
           icon: Icons.person_add,
-          onPressed: () => Navigator.of(context)
-              .pushReplacementNamed(AppRoutes.dashboard),
+          onPressed: () =>
+              Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

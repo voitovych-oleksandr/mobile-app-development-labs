@@ -24,10 +24,8 @@ class PowerPlanApp extends StatelessWidget {
         AppRoutes.login: (BuildContext context) => const LoginScreen(),
         AppRoutes.registration: (BuildContext context) =>
             const RegistrationScreen(),
-        AppRoutes.dashboard: (BuildContext context) =>
-            const DashboardScreen(),
-        AppRoutes.profile: (BuildContext context) =>
-            const UserProfileScreen(),
+        AppRoutes.dashboard: (BuildContext context) => const DashboardScreen(),
+        AppRoutes.profile: (BuildContext context) => const UserProfileScreen(),
       },
     );
   }

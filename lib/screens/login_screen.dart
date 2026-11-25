@@ -29,8 +29,8 @@ class LoginScreen extends StatelessWidget {
         PrimaryButton(
           label: 'Увійти',
           icon: Icons.login,
-          onPressed: () => Navigator.of(context)
-              .pushReplacementNamed(AppRoutes.dashboard),
+          onPressed: () =>
+              Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard),
         ),
         TextButton(
           onPressed: () =>
