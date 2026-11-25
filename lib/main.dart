@@ -1,96 +1,34 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:mobile_labs/core/app_routes.dart';
+import 'package:mobile_labs/core/app_theme.dart';
+import 'package:mobile_labs/screens/dashboard_screen.dart';
+import 'package:mobile_labs/screens/login_screen.dart';
+import 'package:mobile_labs/screens/registration_screen.dart';
+import 'package:mobile_labs/screens/user_profile_screen.dart';
 
 void main() {
-  runApp(const CounterApp());
+  runApp(const PowerPlanApp());
 }
 
-class CounterApp extends StatelessWidget {
-  const CounterApp({super.key});
+class PowerPlanApp extends StatelessWidget {
+  const PowerPlanApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Лабораторна робота №1',
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      home: const CounterPage(),
-    );
-  }
-}
-
-class CounterPage extends StatefulWidget {
-  const CounterPage({super.key});
-
-  @override
-  State<CounterPage> createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
-  static const String _resetCommand = 'Avada Kedavra';
-
-  final TextEditingController _controller = TextEditingController();
-  int _counter = 0;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _handleInput() {
-    final String raw = _controller.text;
-
-    if (raw == _resetCommand) {
-      setState(() {
-        _counter = 0;
-      });
-      _controller.clear();
-      return;
-    }
-
-    final int? value = int.tryParse(raw.trim());
-
-    if (value == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Введіть ціле число або команду "Avada Kedavra"'),
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _counter += value;
-    });
-    _controller.clear();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Лічильник')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('$_counter', style: Theme.of(context).textTheme.displayLarge),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Введіть число або команду',
-                border: OutlineInputBorder(),
-              ),
-              onSubmitted: (_) => _handleInput(),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _handleInput,
-              child: const Text('Застосувати'),
-            ),
-          ],
-        ),
-      ),
+      title: 'PowerPlan',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light(),
+      initialRoute: AppRoutes.login,
+      routes: <String, WidgetBuilder>{
+        AppRoutes.login: (BuildContext context) => const LoginScreen(),
+        AppRoutes.registration: (BuildContext context) =>
+            const RegistrationScreen(),
+        AppRoutes.dashboard: (BuildContext context) =>
+            const DashboardScreen(),
+        AppRoutes.profile: (BuildContext context) =>
+            const UserProfileScreen(),
+      },
     );
   }
 }
