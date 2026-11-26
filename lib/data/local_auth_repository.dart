@@ -5,19 +5,37 @@ import 'package:crypto/crypto.dart';
 import 'package:mobile_labs/domain/errors/domain_exception.dart';
 import 'package:mobile_labs/domain/models/user.dart';
 import 'package:mobile_labs/domain/repositories/auth_repository.dart';
+import 'package:mobile_labs/domain/repositories/session_store.dart';
 import 'package:mobile_labs/domain/validators/validators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalAuthRepository implements AuthRepository {
-  LocalAuthRepository(this._prefs);
+  LocalAuthRepository(this._prefs, this._session);
 
   static const _usersKey = 'auth.users';
 
   final SharedPreferences _prefs;
+  final SessionStore _session;
   User? _current;
 
   @override
   User? get currentUser => _current;
+
+  @override
+  Future<User?> restoreSession() async {
+    final String? email = await _session.readEmail();
+    if (email == null) return null;
+
+    final Map<String, dynamic>? record =
+        _readUsers()[email] as Map<String, dynamic>?;
+    if (record == null) {
+      await _session.clear();
+      return null;
+    }
+
+    _current = User(email: email, name: record['name'] as String);
+    return _current;
+  }
 
   @override
   Future<void> register({
@@ -58,12 +76,14 @@ class LocalAuthRepository implements AuthRepository {
 
     final user = User(email: key, name: record['name'] as String);
     _current = user;
+    await _session.writeEmail(key);
     return user;
   }
 
   @override
   Future<void> signOut() async {
     _current = null;
+    await _session.clear();
   }
 
   Map<String, dynamic> _readUsers() {

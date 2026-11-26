@@ -2,6 +2,7 @@ import 'package:mobile_labs/domain/models/user.dart';
 
 abstract interface class AuthRepository {
   User? get currentUser;
+  Future<User?> restoreSession();
 
   Future<void> register({
     required String name,
