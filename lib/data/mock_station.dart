@@ -28,9 +28,5 @@ abstract final class MockStation {
         isOn: false,
       ),
     ],
-    outages: <OutageSlot>[
-      OutageSlot(startHour: 8, endHour: 12),
-      OutageSlot(startHour: 18, endHour: 22),
-    ],
   );
 }

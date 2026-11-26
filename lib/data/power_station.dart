@@ -14,13 +14,6 @@ class OutputPort {
   final bool isOn;
 }
 
-class OutageSlot {
-  const OutageSlot({required this.startHour, required this.endHour});
-
-  final int startHour;
-  final int endHour;
-}
-
 class PowerStation {
   const PowerStation({
     required this.name,
@@ -29,7 +22,6 @@ class PowerStation {
     required this.outputWatts,
     required this.consumptionWatts,
     required this.outputs,
-    required this.outages,
   });
 
   final String name;
@@ -38,5 +30,4 @@ class PowerStation {
   final int outputWatts;
   final int consumptionWatts;
   final List<OutputPort> outputs;
-  final List<OutageSlot> outages;
 }

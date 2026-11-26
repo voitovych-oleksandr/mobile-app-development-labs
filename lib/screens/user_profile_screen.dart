@@ -3,13 +3,18 @@ import 'package:mobile_labs/core/app_colors.dart';
 import 'package:mobile_labs/core/app_routes.dart';
 import 'package:mobile_labs/core/app_spacing.dart';
 import 'package:mobile_labs/data/mock_station.dart';
+import 'package:mobile_labs/domain/repositories/auth_repository.dart';
 import 'package:mobile_labs/widgets/primary_button.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+  const UserProfileScreen({required this.authRepository, super.key});
+
+  final AuthRepository authRepository;
 
   @override
   Widget build(BuildContext context) {
+    final user = authRepository.currentUser;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Профіль')),
       body: Center(
@@ -26,14 +31,14 @@ class UserProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  'Іван Петренко',
+                  user?.name ?? 'Гість',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: AppSpacing.lg),
-                const _ProfileTile(
+                _ProfileTile(
                   icon: Icons.mail_outline,
                   label: 'Email',
-                  value: 'ivan@example.com',
+                  value: user?.email ?? '—',
                 ),
                 _ProfileTile(
                   icon: Icons.bolt,
@@ -44,11 +49,14 @@ class UserProfileScreen extends StatelessWidget {
                 PrimaryButton(
                   label: 'Вийти',
                   icon: Icons.logout,
-                  onPressed: () => Navigator.of(context)
-                      .pushNamedAndRemoveUntil(
-                        AppRoutes.login,
-                        (Route<dynamic> route) => false,
-                      ),
+                  onPressed: () async {
+                    await authRepository.signOut();
+                    if (!context.mounted) return;
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      AppRoutes.login,
+                      (Route<dynamic> route) => false,
+                    );
+                  },
                 ),
               ],
             ),

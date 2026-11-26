@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile_labs/core/app_colors.dart';
 import 'package:mobile_labs/core/app_spacing.dart';
-import 'package:mobile_labs/data/power_station.dart';
+import 'package:mobile_labs/domain/models/outage_slot.dart';
 
 class OutageScheduleBar extends StatelessWidget {
   const OutageScheduleBar({required this.outages, super.key});
