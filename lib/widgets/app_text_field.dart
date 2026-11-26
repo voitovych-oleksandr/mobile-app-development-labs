@@ -6,6 +6,7 @@ class AppTextField extends StatelessWidget {
     this.controller,
     this.hint,
     this.icon,
+    this.errorText,
     this.obscureText = false,
     this.keyboardType,
     super.key,
@@ -15,6 +16,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? hint;
   final IconData? icon;
+  final String? errorText;
   final bool obscureText;
   final TextInputType? keyboardType;
 
@@ -27,6 +29,7 @@ class AppTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
+        errorText: errorText,
         prefixIcon: icon == null ? null : Icon(icon),
       ),
     );
