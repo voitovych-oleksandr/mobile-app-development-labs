@@ -12,12 +12,24 @@ class MqttTelemetrySource implements TelemetrySource {
 
   MqttServerClient? _client;
   StreamSubscription<List<MqttReceivedMessage<MqttMessage>>>? _updatesSub;
+  Future<bool>? _pendingConnect;
 
   @override
   Stream<TelemetryReading> get readings => _controller.stream;
 
   @override
-  Future<bool> connect() async {
+  Future<bool> connect() {
+    // Друге підключення під час першого обірве перше,
+    // тому повертаємо результат поточної спроби.
+    final Future<bool>? pending = _pendingConnect;
+    if (pending != null) return pending;
+
+    final Future<bool> attempt = _connectOnce();
+    _pendingConnect = attempt;
+    return attempt.whenComplete(() => _pendingConnect = null);
+  }
+
+  Future<bool> _connectOnce() async {
     await disconnect();
 
     final String clientId =
@@ -32,8 +44,8 @@ class MqttTelemetrySource implements TelemetrySource {
     _client = client;
 
     try {
-      await client.connect();
-    } on Exception {
+      await client.connect().timeout(const Duration(seconds: 15));
+    } catch (_) {
       await disconnect();
       return false;
     }
