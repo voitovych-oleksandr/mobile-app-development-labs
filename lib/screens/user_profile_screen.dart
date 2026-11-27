@@ -11,6 +11,33 @@ class UserProfileScreen extends StatelessWidget {
 
   final AuthRepository authRepository;
 
+  Future<void> _confirmLogout(BuildContext context) async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: const Text('Вийти з акаунта?'),
+        content: const Text('Потрібно буде знову ввійти в застосунок.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Скасувати'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Вийти'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    await authRepository.signOut();
+    if (!context.mounted) return;
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(AppRoutes.login, (Route<dynamic> route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = authRepository.currentUser;
@@ -49,14 +76,7 @@ class UserProfileScreen extends StatelessWidget {
                 PrimaryButton(
                   label: 'Вийти',
                   icon: Icons.logout,
-                  onPressed: () async {
-                    await authRepository.signOut();
-                    if (!context.mounted) return;
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      AppRoutes.login,
-                      (Route<dynamic> route) => false,
-                    );
-                  },
+                  onPressed: () => _confirmLogout(context),
                 ),
               ],
             ),

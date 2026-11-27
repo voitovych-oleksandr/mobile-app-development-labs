@@ -3,15 +3,21 @@ import 'package:mobile_labs/core/app_routes.dart';
 import 'package:mobile_labs/core/app_spacing.dart';
 import 'package:mobile_labs/domain/errors/domain_exception.dart';
 import 'package:mobile_labs/domain/repositories/auth_repository.dart';
+import 'package:mobile_labs/domain/services/network_service.dart';
 import 'package:mobile_labs/domain/validators/validators.dart';
 import 'package:mobile_labs/widgets/app_text_field.dart';
 import 'package:mobile_labs/widgets/auth_layout.dart';
 import 'package:mobile_labs/widgets/primary_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({required this.authRepository, super.key});
+  const LoginScreen({
+    required this.authRepository,
+    required this.networkService,
+    super.key,
+  });
 
   final AuthRepository authRepository;
+  final NetworkService networkService;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -46,6 +52,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isLoading = true);
     try {
+      final bool online = await widget.networkService.isOnline();
+      if (!mounted) return;
+      if (!online) {
+        messenger.showSnackBar(
+          const SnackBar(content: Text('Немає інтернету. Вхід недоступний.')),
+        );
+        return;
+      }
+
       await widget.authRepository.signIn(email: email, password: password);
       navigator.pushReplacementNamed(AppRoutes.dashboard);
     } on DomainException catch (e) {
